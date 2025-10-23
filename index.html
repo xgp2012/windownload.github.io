@@ -118,6 +118,8 @@
             font-weight: 600;
             cursor: pointer;
             transition: background 0.3s ease;
+            text-decoration: none;
+            text-align: center;
         }
         
         .download-btn:hover {
@@ -896,20 +898,16 @@
             
             // 模拟登录验证延迟
             setTimeout(() => {
-                // 使用密码验证文件进行验证
-                if (typeof verifyAdminCredentials === 'function') {
-                    if (verifyAdminCredentials(username, password)) {
-                        state.isAdmin = true;
-                        elements.loginModal.style.display = 'none';
-                        elements.adminPanel.style.display = 'block';
-                        renderResourceList();
-                        // 显示成功消息
-                        showNotification('登录成功！', 'success');
-                    } else {
-                        showNotification('用户名或密码错误！', 'error');
-                    }
+                // 直接验证用户名和密码
+                if (username === 'admin' && verifyPassword(password)) {
+                    state.isAdmin = true;
+                    elements.loginModal.style.display = 'none';
+                    elements.adminPanel.style.display = 'block';
+                    renderResourceList();
+                    // 显示成功消息
+                    showNotification('登录成功！', 'success');
                 } else {
-                    showNotification('验证系统未加载，请刷新页面重试。', 'error');
+                    showNotification('用户名或密码错误！', 'error');
                 }
                 
                 // 隐藏加载动画
@@ -918,6 +916,28 @@
                 // 清空表单
                 elements.loginForm.reset();
             }, 1000);
+        }
+
+        // 密码验证函数 - 使用更稳定的加密模式
+        function verifyPassword(inputPassword) {
+            // 使用更简单的加密验证，避免外部文件依赖
+            // 默认密码: xgp20120905
+            const salt = "W1nd0w5_D0wnl04d_C3nt3r_2023";
+            const correctPassword = "xgp20120905";
+            
+            // 简单加密验证
+            let encryptedInput = '';
+            for (let i = 0; i < inputPassword.length; i++) {
+                encryptedInput += String.fromCharCode(inputPassword.charCodeAt(i) + 5);
+            }
+            
+            let encryptedCorrect = '';
+            for (let i = 0; i < correctPassword.length; i++) {
+                encryptedCorrect += String.fromCharCode(correctPassword.charCodeAt(i) + 5);
+            }
+            
+            // 添加盐值并比较
+            return (encryptedInput + salt) === (encryptedCorrect + salt);
         }
 
         // 打开资源模态框
@@ -1108,8 +1128,5 @@ const defaultResources = ${JSON.stringify(state.resources, null, 2)};`;
         // 初始化应用
         document.addEventListener('DOMContentLoaded', initApp);
     </script>
-    
-    <!-- 引入密码验证文件 -->
-    <script src="xgp2012.js"></script>
 </body>
 </html>
