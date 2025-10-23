@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windows资源中心 - 管理系统</title>
+    <!-- 引入Bootstrap CSS框架 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- 引入Font Awesome图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 定义CSS变量，便于统一管理主题色 */
+        :root {
+            --primary-color: #0078d7; /* 主色调 - 蓝色 */
+            --secondary-color: #005a9e; /* 次要色调 - 深蓝色 */
+            --accent-color: #107c10; /* 强调色 - 绿色 */
+            --light-bg: #f3f2f1; /* 背景色 - 浅灰色 */
+            --dark-text: #323130; /* 文字颜色 - 深灰色 */
+        }
+        
+        /* 全局样式设置 */
+        body {
+            font-family: 'Segoe UI', sans-serif; /* 设置字体 */
+            background-color: var(--light-bg); /* 设置背景色 */
+            color: var(--dark-text); /* 设置文字颜色 */
+            line-height: 1.6; /* 设置行高 */
+            margin: 0; /* 清除默认外边距 */
+            padding: 0; /* 清除默认内边距 */
+            min-height: 100vh; /* 最小高度为视口高度 */
+            display: flex; /* 弹性布局 */
+            flex-direction: column; /* 垂直方向排列 */
+        }
+        
+        /* 导航栏样式 */
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%); /* 渐变背景 */
+            padding: 1rem 0; /* 上下内边距 */
+        }
+        
+        /* 导航栏品牌文字样式 */
+        .navbar-brand {
+            font-weight: 600; /* 字体粗细 */
+            font-size: 1.5rem; /* 字体大小 */
+        }
+        
+        /* 登录容器样式 */
+        .login-container {
+            max-width: 400px; /* 最大宽度 */
+            margin: 100px auto; /* 居中显示 */
+            padding: 2rem; /* 内边距 */
+            background: white; /* 背景色 */
+            border-radius: 8px; /* 圆角 */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* 阴影效果 */
+        }
+        
+        /* 管理面板样式 */
+        .admin-panel {
+            background: white; /* 背景色 */
+            border-radius: 8px; /* 圆角 */
+            padding: 2rem; /* 内边距 */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* 阴影效果 */
+            margin-bottom: 2rem; /* 底部外边距 */
+            flex-grow: 1; /* 占据剩余空间 */
+        }
+        
+        /* 管理标签页样式 */
+        .admin-tabs {
+            margin-bottom: 1.5rem; /* 底部外边距 */
+        }
+        
+        /* 文件列表容器样式 */
+        .file-list {
+            max-height: 400px; /* 最大高度 */
+            overflow-y: auto; /* 垂直滚动 */
+        }
+        
+        /* 文件项样式 */
+        .file-item {
+            display: flex; /* 弹性布局 */
+            justify-content: space-between; /* 两端对齐 */
+            align-items: center; /* 垂直居中 */
+            padding: 0.75rem; /* 内边距 */
+            border-bottom: 1px solid #eee; /* 底部边框 */
+        }
+        
+        /* 最后一个文件项无底部边框 */
+        .file-item:last-child {
+            border-bottom: none; /* 无底部边框 */
+        }
+        
+        /* 文件项信息样式 */
+        .file-item-info {
+            flex-grow: 1; /* 占据剩余空间 */
+        }
+        
+        /* 文件项操作按钮容器样式 */
+        .file-item-actions {
+            display: flex; /* 弹性布局 */
+            gap: 0.5rem; /* 按钮间距 */
+        }
+        
+        /* 页脚样式 */
+        .footer {
+            background-color: white; /* 背景色 */
+            padding: 1.5rem 0; /* 上下内边距 */
+            margin-top: auto; /* 顶部自动外边距，推到底部 */
+            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1); /* 阴影效果 */
+        }
+        
+        /* 统计卡片样式 */
+        .stats-card {
+            background: white; /* 背景色 */
+            border-radius: 8px; /* 圆角 */
+            padding: 1.5rem; /* 内边距 */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* 阴影效果 */
+            margin-bottom: 1.5rem; /* 底部外边距 */
+            text-align: center; /* 文字居中 */
+        }
+        
+        /* 统计数字样式 */
+        .stat-number {
+            font-size: 2rem; /* 字体大小 */
+            font-weight: 700; /* 字体粗细 */
+            color: var(--primary-color); /* 颜色 */
+            display: block; /* 块级元素 */
+        }
+        
+        /* 统计标签样式 */
+        .stat-label {
+            color: #605e5c; /* 颜色 */
+            font-size: 0.9rem; /* 字体大小 */
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <!-- 网站品牌标识 -->
+            <a class="navbar-brand" href="index.html">
+                <i class="fab fa-windows me-2"></i>Windows资源中心 - 管理系统
+            </a>
+            <!-- 导航链接 -->
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="index.html">返回首页</a>
+                <a class="nav-link" href="#" id="logoutBtn">退出登录</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 登录界面 -->
+    <div class="container" id="loginContainer">
+        <div class="login-container">
+            <h2 class="text-center mb-4">管理员登录</h2>
+            <!-- 登录表单 -->
+            <form id="loginForm">
+                <div class="mb-3">
+                    <label for="username" class="form-label">用户名</label>
+                    <input type="text" class="form-control" id="username" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">密码</label>
+                    <input type="password" class="form-control" id="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">登录</button>
+            </form>
+            <!-- 登录消息显示区域 -->
+            <div id="loginMessage" class="mt-3 text-center text-danger"></div>
+        </div>
+    </div>
+
+    <!-- 管理界面 -->
+    <div class="container" id="adminContainer" style="display: none;">
+        <!-- 统计信息区域 -->
+        <div class="row mb-4">
+            <!-- 资源总数统计 -->
+            <div class="col-md-4">
+                <div class="stats-card">
+                    <span class="stat-number" id="adminTotalFiles">0</span>
+                    <span class="stat-label">资源总数</span>
+                </div>
+            </div>
+            <!-- 系统镜像统计 -->
+            <div class="col-md-4">
+                <div class="stats-card">
+                    <span class="stat-number" id="adminSystemFiles">0</span>
+                    <span class="stat-label">系统镜像</span>
+                </div>
+            </div>
+            <!-- 最近更新统计 -->
+            <div class="col-md-4">
+                <div class="stats-card">
+                    <span class="stat-number" id="adminRecentFiles">0</span>
+                    <span class="stat-label">最近更新</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 管理面板 -->
+        <div class="admin-panel">
+            <h3 class="mb-4">资源管理中心</h3>
+            
+            <!-- 标签页导航 -->
+            <ul class="nav nav-tabs admin-tabs" id="adminTabs">
+                <li class="nav-item">
+                    <a class="nav-link active" data-bs-toggle="tab" href="#addResource">添加资源</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab" href="#manageResources">管理资源</a>
+                </li>
+            </ul>
+            
+            <!-- 标签页内容 -->
+            <div class="tab-content">
+                <!-- 添加资源标签页 -->
+                <div class="tab-pane fade show active" id="addResource">
+                    <form id="fileForm">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <!-- 资源名称输入 -->
+                                <div class="mb-3">
+                                    <label for="fileName" class="form-label">资源名称</label>
+                                    <input type="text" class="form-control" id="fileName" required>
+                                </div>
+                                <!-- 资源描述输入 -->
+                                <div class="mb-3">
+                                    <label for="fileDescription" class="form-label">资源描述</label>
+                                    <textarea class="form-control" id="fileDescription" rows="2"></textarea>
+                                </div>
+                                <!-- 资源分类选择 -->
+                                <div class="mb-3">
+                                    <label for="fileCategory" class="form-label">资源分类</label>
+                                    <select class="form-select" id="fileCategory" required>
+                                        <option value="system">系统镜像</option>
+                                        <option value="utility">系统工具</option>
+                                        <option value="driver">驱动程序</option>
+                                        <option value="security">安全软件</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <!-- 文件URL输入 -->
+                                <div class="mb-3">
+                                    <label for="fileUrl" class="form-label">文件URL</label>
+                                    <input type="url" class="form-control" id="fileUrl" required>
+                                </div>
+                                <!-- 文件大小输入 -->
+                                <div class="mb-3">
+                                    <label for="fileSize" class="form-label">文件大小 (GB)</label>
+                                    <input type="number" class="form-control" id="fileSize" step="0.1" required>
+                                </div>
+                                <!-- 推荐资源复选框 -->
+                                <div class="mb-3 form-check">
+                                    <input type="checkbox" class="form-check-input" id="featuredFile">
+                                    <label class="form-check-label" for="featuredFile">设为推荐资源</label>
+                                </div>
+                                <!-- 显示文件大小复选框 -->
+                                <div class="mb-3 form-check">
+                                    <input type="checkbox" class="form-check-input" id="showSizeFile" checked>
+                                    <label class="form-check-label" for="showSizeFile">在下载卡片中显示文件大小</label>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 提交按钮 -->
+                        <button type="submit" class="btn btn-primary">添加资源</button>
+                    </form>
+                </div>
+                
+                <!-- 管理资源标签页 -->
+                <div class="tab-pane fade" id="manageResources">
+                    <div class="file-list">
+                        <!-- 文件列表容器 -->
+                        <div id="fileListContainer"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row align-items-center">
+                <!-- 版权信息 -->
+                <div class="col-md-8 text-center text-md-start">
+                    <p class="text-muted mb-0">© 2023 Windows资源中心管理系统</p>
+                </div>
+                <!-- 返回首页链接 -->
+                <div class="col-md-4 text-center text-md-end">
+                    <a href="index.html" class="text-decoration-none">返回首页</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 引入Bootstrap JavaScript库 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 默认登录凭据
+        const DEFAULT_USERNAME = 'admin'; // 默认用户名
+        const DEFAULT_PASSWORD = 'xgp20120905'; // 默认密码
+        
+        // 资源数据模型 - 从localStorage加载或使用空数组
+        let files = JSON.parse(localStorage.getItem('files')) || [];
+        
+        // DOM元素缓存 - 提高性能
+        const loginContainer = document.getElementById('loginContainer'); // 登录容器
+        const adminContainer = document.getElementById('adminContainer'); // 管理容器
+        const loginForm = document.getElementById('loginForm'); // 登录表单
+        const fileForm = document.getElementById('fileForm'); // 文件表单
+        const fileListContainer = document.getElementById('fileListContainer'); // 文件列表容器
+        const adminTotalFilesEl = document.getElementById('adminTotalFiles'); // 管理界面总文件数元素
+        const adminSystemFilesEl = document.getElementById('adminSystemFiles'); // 管理界面系统文件数元素
+        const adminRecentFilesEl = document.getElementById('adminRecentFiles'); // 管理界面最近更新文件数元素
+
+        // 检查登录状态
+        function checkLoginStatus() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true'; // 从localStorage获取登录状态
+            
+            if (isLoggedIn) {
+                loginContainer.style.display = 'none'; // 隐藏登录界面
+                adminContainer.style.display = 'block'; // 显示管理界面
+                loadAdminData(); // 加载管理数据
+            } else {
+                loginContainer.style.display = 'block'; // 显示登录界面
+                adminContainer.style.display = 'none'; // 隐藏管理界面
+            }
+        }
+        
+        // 登录功能
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault(); // 阻止表单默认提交行为
+            
+            const username = document.getElementById('username').value; // 获取用户名
+            const password = document.getElementById('password').value; // 获取密码
+            const message = document.getElementById('loginMessage'); // 获取消息显示元素
+            
+            // 验证用户名和密码
+            if (username === DEFAULT_USERNAME && password === DEFAULT_PASSWORD) {
+                localStorage.setItem('isLoggedIn', 'true'); // 保存登录状态
+                checkLoginStatus(); // 更新界面状态
+            } else {
+                message.textContent = '用户名或密码错误！'; // 显示错误消息
+            }
+        });
+        
+        // 退出登录功能
+        function logout() {
+            localStorage.removeItem('isLoggedIn'); // 移除登录状态
+            checkLoginStatus(); // 更新界面状态
+        }
+        
+        // 绑定退出登录按钮点击事件
+        document.getElementById('logoutBtn').addEventListener('click', logout);
+        
+        // 加载管理数据
+        function loadAdminData() {
+            files = JSON.parse(localStorage.getItem('files')) || []; // 从localStorage加载文件数据
+            renderFileList(); // 渲染文件列表
+            updateAdminStats(); // 更新管理界面统计信息
+        }
+        
+        // 渲染文件列表（管理界面）- 使用文档片段优化性能
+        function renderFileList() {
+            // 如果没有资源，显示提示信息
+            if (files.length === 0) {
+                fileListContainer.innerHTML = '<div class="text-center py-3">暂无资源</div>';
+                return;
+            }
+            
+            // 使用文档片段减少DOM操作次数
+            const fragment = document.createDocumentFragment();
+            
+            // 遍历所有文件并创建列表项
+            files.forEach(file => {
+                const fileItem = document.createElement('div'); // 创建文件项元素
+                fileItem.className = 'file-item'; // 设置类名
+                
+                // 设置文件项HTML内容
+                fileItem.innerHTML = `
+                    <div class="file-item-info">
+                        <strong>${file.name}</strong> <!-- 文件名称 -->
+                        <div class="text-muted small">${file.description}</div> <!-- 文件描述 -->
+                        <div class="small">
+                            <span class="badge bg-secondary">${file.category}</span> <!-- 文件分类 -->
+                            ${file.featured ? '<span class="badge bg-success">推荐</span>' : ''} <!-- 推荐标签 -->
+                            ${file.showSize ? '<span class="badge bg-info">显示大小</span>' : '<span class="badge bg-warning">隐藏大小</span>'} <!-- 显示大小状态 -->
+                        </div>
+                    </div>
+                    <div class="file-item-actions">
+                        <!-- 编辑按钮 -->
+                        <button class="btn btn-sm btn-outline-primary" data-action="edit" data-id="${file.id}">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <!-- 删除按钮 -->
+                        <button class="btn btn-sm btn-outline-danger" data-action="delete" data-id="${file.id}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                
+                fragment.appendChild(fileItem); // 将文件项添加到文档片段
+            });
+            
+            // 清空容器并一次性插入所有元素
+            fileListContainer.innerHTML = '';
+            fileListContainer.appendChild(fragment);
+            
+            // 使用事件委托处理按钮点击 - 提高性能
+            fileListContainer.addEventListener('click', function(e) {
+                const button = e.target.closest('button'); // 获取被点击的按钮
+                if (!button) return; // 如果不是按钮，直接返回
+                
+                const action = button.dataset.action; // 获取按钮动作
+                const id = parseInt(button.dataset.id); // 获取文件ID
+                
+                // 根据动作执行相应操作
+                if (action === 'edit') {
+                    editFile(id); // 编辑文件
+                } else if (action === 'delete') {
+                    deleteFile(id); // 删除文件
+                }
+            });
+        }
+
+        // 添加资源功能
+        function addFile() {
+            // 获取表单数据
+            const name = document.getElementById('fileName').value; // 资源名称
+            const description = document.getElementById('fileDescription').value; // 资源描述
+            const category = document.getElementById('fileCategory').value; // 资源分类
+            const url = document.getElementById('fileUrl').value; // 文件URL
+            const size = parseFloat(document.getElementById('fileSize').value); // 文件大小
+            const featured = document.getElementById('featuredFile').checked; // 是否推荐
+            const showSize = document.getElementById('showSizeFile').checked; // 是否显示文件大小
+            
+            // 创建新文件对象
+            const newFile = {
+                id: files.length > 0 ? Math.max(...files.map(f => f.id)) + 1 : 1, // 生成新ID
+                name,
+                description,
+                category,
+                url,
+                size, // 文件大小
+                date: new Date().toISOString().split('T')[0], // 当前日期
+                featured,
+                showSize // 是否显示文件大小
+            };
+            
+            files.push(newFile); // 将新文件添加到数组
+            saveFiles(); // 保存到localStorage
+            renderFileList(); // 重新渲染文件列表
+            updateAdminStats(); // 更新统计信息
+            
+            fileForm.reset(); // 重置表单
+            document.getElementById('showSizeFile').checked = true; // 重置显示大小复选框为选中状态
+            alert('资源添加成功！'); // 显示成功消息
+        }
+
+        // 编辑资源功能
+        function editFile(id) {
+            const file = files.find(f => f.id === id); // 根据ID查找文件
+            if (!file) return; // 如果文件不存在，直接返回
+            
+            // 填充表单数据
+            document.getElementById('fileName').value = file.name; // 资源名称
+            document.getElementById('fileDescription').value = file.description; // 资源描述
+            document.getElementById('fileCategory').value = file.category; // 资源分类
+            document.getElementById('fileUrl').value = file.url; // 文件URL
+            document.getElementById('fileSize').value = file.size; // 文件大小
+            document.getElementById('featuredFile').checked = file.featured; // 是否推荐
+            document.getElementById('showSizeFile').checked = file.showSize; // 是否显示文件大小
+            
+            // 切换到添加资源标签页
+            document.querySelector('[href="#addResource"]').click();
+            
+            // 修改表单提交行为为更新
+            fileForm.onsubmit = function(e) {
+                e.preventDefault();
+                updateFile(id);
+            };
+            
+            // 修改按钮文本
+            fileForm.querySelector('button[type="submit"]').textContent = '更新资源';
+        }
+
+        // 更新资源功能
+        function updateFile(id) {
+            const fileIndex = files.findIndex(f => f.id === id); // 查找文件索引
+            if (fileIndex === -1) return; // 如果文件不存在，直接返回
+            
+            // 获取表单数据
+            const name = document.getElementById('fileName').value; // 资源名称
+            const description = document.getElementById('fileDescription').value; // 资源描述
+            const category = document.getElementById('fileCategory').value; // 资源分类
+            const url = document.getElementById('fileUrl').value; // 文件URL
+            const size = parseFloat(document.getElementById('fileSize').value); // 文件大小
+            const featured = document.getElementById('featuredFile').checked; // 是否推荐
+            const showSize = document.getElementById('showSizeFile').checked; // 是否显示文件大小
+            
+            // 更新文件数据
+            files[fileIndex] = {
+                ...files[fileIndex], // 保留原有属性
+                name,
+                description,
+                category,
+                url,
+                size, // 文件大小
+                featured,
+                showSize // 是否显示文件大小
+            };
+            
+            saveFiles(); // 保存到localStorage
+            renderFileList(); // 重新渲染文件列表
+            updateAdminStats(); // 更新统计信息
+            
+            // 重置表单和按钮文本
+            fileForm.reset();
+            document.getElementById('showSizeFile').checked = true; // 重置显示大小复选框为选中状态
+            fileForm.onsubmit = function(e) {
+                e.preventDefault();
+                addFile();
+            };
+            fileForm.querySelector('button[type="submit"]').textContent = '添加资源';
+            
+            alert('资源更新成功！'); // 显示成功消息
+        }
+
+        // 删除资源功能
+        function deleteFile(id) {
+            // 确认删除
+            if (confirm('确定要删除这个资源吗？')) {
+                files = files.filter(file => file.id !== id); // 过滤掉要删除的文件
+                saveFiles(); // 保存到localStorage
+                renderFileList(); // 重新渲染文件列表
+                updateAdminStats(); // 更新统计信息
+            }
+        }
+
+        // 更新管理统计信息
+        function updateAdminStats() {
+            adminTotalFilesEl.textContent = files.length; // 更新资源总数
+            
+            // 计算系统镜像数量
+            const systemFiles = files.filter(file => file.category === 'system').length;
+            adminSystemFilesEl.textContent = systemFiles; // 更新系统镜像数量
+            
+            // 计算最近30天内添加的文件数量
+            const thirtyDaysAgo = new Date(); // 获取当前日期
+            thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30); // 计算30天前的日期
+            
+            const recentFiles = files.filter(file => {
+                const fileDate = new Date(file.date); // 将文件日期转换为Date对象
+                return fileDate >= thirtyDaysAgo; // 返回30天内添加的文件
+            });
+            
+            adminRecentFilesEl.textContent = recentFiles.length; // 更新最近更新数量
+        }
+
+        // 保存文件数据到localStorage
+        function saveFiles() {
+            localStorage.setItem('files', JSON.stringify(files)); // 将文件数据转换为JSON字符串并保存
+        }
+        
+        // 初始化 - DOM加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            checkLoginStatus(); // 检查登录状态
+            
+            // 添加资源表单提交事件
+            fileForm.addEventListener('submit', function(e) {
+                e.preventDefault(); // 阻止表单默认提交行为
+                addFile(); // 调用添加资源函数
+            });
+        });
+    </script>
+</body>
+</html>

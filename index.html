@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windows资源中心 - 系统镜像与工具下载</title>
+    <!-- 引入Bootstrap CSS框架 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- 引入Font Awesome图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 定义CSS变量，便于统一管理主题色 */
+        :root {
+            --primary-color: #0078d7; /* 主色调 - 蓝色 */
+            --secondary-color: #005a9e; /* 次要色调 - 深蓝色 */
+            --accent-color: #107c10; /* 强调色 - 绿色 */
+            --light-bg: #f3f2f1; /* 背景色 - 浅灰色 */
+            --dark-text: #323130; /* 文字颜色 - 深灰色 */
+        }
+        
+        /* 全局样式设置 */
+        body {
+            font-family: 'Segoe UI', sans-serif; /* 设置字体 */
+            background-color: var(--light-bg); /* 设置背景色 */
+            color: var(--dark-text); /* 设置文字颜色 */
+            line-height: 1.6; /* 设置行高 */
+            margin: 0; /* 清除默认外边距 */
+            padding: 0; /* 清除默认内边距 */
+        }
+        
+        /* 导航栏样式 */
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%); /* 渐变背景 */
+            padding: 1rem 0; /* 上下内边距 */
+        }
+        
+        /* 导航栏品牌文字样式 */
+        .navbar-brand {
+            font-weight: 600; /* 字体粗细 */
+            font-size: 1.5rem; /* 字体大小 */
+        }
+        
+        /* 英雄区域样式 */
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%); /* 渐变背景 */
+            color: white; /* 文字颜色 */
+            padding: 3rem 0; /* 上下内边距 */
+            margin-bottom: 2rem; /* 底部外边距 */
+        }
+        
+        /* 下载卡片样式 */
+        .download-card {
+            background: white; /* 背景色 */
+            border-radius: 8px; /* 圆角 */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* 阴影效果 */
+            transition: all 0.3s; /* 过渡动画 */
+            margin-bottom: 2rem; /* 底部外边距 */
+            overflow: hidden; /* 隐藏溢出内容 */
+            border: none; /* 无边框 */
+            border-left: 4px solid var(--primary-color); /* 左侧边框 */
+        }
+        
+        /* 下载卡片悬停效果 */
+        .download-card:hover {
+            transform: translateY(-5px); /* 上移效果 */
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); /* 增强阴影 */
+        }
+        
+        /* 卡片头部样式 */
+        .card-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%); /* 渐变背景 */
+            color: white; /* 文字颜色 */
+            padding: 1rem 1.5rem; /* 内边距 */
+            border-bottom: none; /* 无底部边框 */
+        }
+        
+        /* 卡片标题样式 */
+        .card-title {
+            font-weight: 600; /* 字体粗细 */
+            margin: 0; /* 清除默认外边距 */
+            font-size: 1.2rem; /* 字体大小 */
+        }
+        
+        /* 卡片主体样式 */
+        .card-body {
+            padding: 1.5rem; /* 内边距 */
+        }
+        
+        /* 文件信息区域样式 */
+        .file-info {
+            display: flex; /* 弹性布局 */
+            justify-content: space-between; /* 两端对齐 */
+            margin-bottom: 1.5rem; /* 底部外边距 */
+            flex-wrap: wrap; /* 允许换行 */
+        }
+        
+        /* 文件元信息样式 */
+        .file-meta {
+            display: flex; /* 弹性布局 */
+            align-items: center; /* 垂直居中 */
+            margin-right: 1rem; /* 右侧外边距 */
+            margin-bottom: 0.5rem; /* 底部外边距 */
+        }
+        
+        /* 文件元信息图标样式 */
+        .file-meta i {
+            margin-right: 0.5rem; /* 图标右侧间距 */
+            color: var(--primary-color); /* 图标颜色 */
+        }
+        
+        /* 下载按钮样式 */
+        .download-btn {
+            background: linear-gradient(135deg, var(--accent-color) 0%, #0e6c0e 100%); /* 渐变背景 */
+            color: white; /* 文字颜色 */
+            border: none; /* 无边框 */
+            border-radius: 4px; /* 圆角 */
+            padding: 0.75rem 2rem; /* 内边距 */
+            font-weight: 600; /* 字体粗细 */
+            transition: all 0.3s; /* 过渡动画 */
+            display: block; /* 块级元素 */
+            width: 100%; /* 宽度100% */
+            text-align: center; /* 文字居中 */
+            text-decoration: none; /* 无下划线 */
+        }
+        
+        /* 下载按钮悬停效果 */
+        .download-btn:hover {
+            transform: translateY(-2px); /* 上移效果 */
+            box-shadow: 0 5px 15px rgba(16, 124, 16, 0.4); /* 阴影效果 */
+            color: white; /* 文字颜色 */
+        }
+        
+        /* 文件图标样式 */
+        .file-icon {
+            font-size: 3rem; /* 图标大小 */
+            color: var(--primary-color); /* 图标颜色 */
+            margin-bottom: 1rem; /* 底部外边距 */
+            text-align: center; /* 居中 */
+        }
+        
+        /* 统计信息容器样式 */
+        .stats-container {
+            background: white; /* 背景色 */
+            border-radius: 8px; /* 圆角 */
+            padding: 1.5rem; /* 内边距 */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* 阴影效果 */
+            margin-bottom: 2rem; /* 底部外边距 */
+        }
+        
+        /* 统计项样式 */
+        .stat-item {
+            text-align: center; /* 文字居中 */
+            padding: 1rem; /* 内边距 */
+        }
+        
+        /* 统计数字样式 */
+        .stat-number {
+            font-size: 2rem; /* 字体大小 */
+            font-weight: 700; /* 字体粗细 */
+            color: var(--primary-color); /* 颜色 */
+            display: block; /* 块级元素 */
+        }
+        
+        /* 统计标签样式 */
+        .stat-label {
+            color: #605e5c; /* 颜色 */
+            font-size: 0.9rem; /* 字体大小 */
+        }
+        
+        /* 推荐标签样式 */
+        .featured-badge {
+            background-color: #ffb900; /* 背景色 */
+            color: #000; /* 文字颜色 */
+            padding: 0.25rem 0.75rem; /* 内边距 */
+            border-radius: 4px; /* 圆角 */
+            font-size: 0.8rem; /* 字体大小 */
+            font-weight: 700; /* 字体粗细 */
+            display: inline-block; /* 行内块元素 */
+            margin-left: 0.5rem; /* 左侧外边距 */
+        }
+        
+        /* 页脚样式 */
+        .footer {
+            background-color: white; /* 背景色 */
+            padding: 2rem 0; /* 上下内边距 */
+            margin-top: 3rem; /* 顶部外边距 */
+            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1); /* 阴影效果 */
+        }
+        
+        /* 管理员按钮样式 */
+        .admin-toggle {
+            position: fixed; /* 固定定位 */
+            bottom: 20px; /* 距离底部 */
+            right: 20px; /* 距离右侧 */
+            z-index: 1000; /* 层级 */
+            background: var(--primary-color); /* 背景色 */
+            color: white; /* 文字颜色 */
+            border: none; /* 无边框 */
+            border-radius: 50%; /* 圆形 */
+            width: 60px; /* 宽度 */
+            height: 60px; /* 高度 */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* 阴影效果 */
+            font-size: 1.5rem; /* 字体大小 */
+            display: flex; /* 弹性布局 */
+            align-items: center; /* 垂直居中 */
+            justify-content: center; /* 水平居中 */
+            text-decoration: none; /* 无下划线 */
+        }
+        
+        /* 移动端响应式样式 */
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 2rem 0; /* 移动端内边距调整 */
+            }
+            
+            .file-info {
+                flex-direction: column; /* 移动端垂直排列 */
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <!-- 网站品牌标识 -->
+            <a class="navbar-brand" href="#">
+                <i class="fab fa-windows me-2"></i>Windows资源中心
+            </a>
+            <!-- 导航链接 -->
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="admin.html">管理系统</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要内容区域 -->
+    <main>
+        <!-- 英雄区域 - 页面顶部展示区域 -->
+        <section class="hero-section">
+            <div class="container text-center">
+                <h1 class="hero-title">Windows系统镜像与工具下载</h1>
+                <p class="hero-subtitle">正版系统镜像、实用工具软件和驱动程序一站式下载</p>
+            </div>
+        </section>
+
+        <div class="container">
+            <!-- 统计信息展示区域 -->
+            <div class="stats-container">
+                <div class="row text-center">
+                    <!-- 资源总数统计 -->
+                    <div class="col-md-4 col-6">
+                        <div class="stat-item">
+                            <span class="stat-number" id="totalFiles">0</span>
+                            <span class="stat-label">资源总数</span>
+                        </div>
+                    </div>
+                    <!-- 系统镜像统计 -->
+                    <div class="col-md-4 col-6">
+                        <div class="stat-item">
+                            <span class="stat-number" id="systemFiles">0</span>
+                            <span class="stat-label">系统镜像</span>
+                        </div>
+                    </div>
+                    <!-- 最近更新统计 -->
+                    <div class="col-md-4 col-12">
+                        <div class="stat-item">
+                            <span class="stat-number" id="recentFiles">0</span>
+                            <span class="stat-label">最近更新</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 资源列表容器 -->
+            <div class="row" id="filesContainer"></div>
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row align-items-center">
+                <!-- 版权信息 -->
+                <div class="col-md-8 text-center text-md-start">
+                    <p class="mb-0">© 2023 Windows资源中心. 本网站仅提供资源信息，下载内容版权归微软公司所有.</p>
+                </div>
+                <!-- 管理链接 -->
+                <div class="col-md-4 text-center text-md-end">
+                    <a href="admin.html" class="text-decoration-none">管理系统</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 管理员入口按钮 -->
+    <a href="admin.html" class="admin-toggle">
+        <i class="fas fa-cog"></i>
+    </a>
+
+    <!-- 引入Bootstrap JavaScript库 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 资源数据模型 - 从localStorage加载或使用默认数据
+        let files = JSON.parse(localStorage.getItem('files')) || [
+            {
+                id: 1, // 资源ID
+                name: "Windows 11 22H2", // 资源名称
+                description: "最新Windows 11消费者版系统镜像，包含所有最新功能和安全更新", // 资源描述
+                category: "system", // 资源分类
+                url: "https://example.com/win11_22h2_x64.iso", // 下载链接
+                size: 5.2, // 文件大小（GB）
+                date: "2023-07-15", // 添加日期
+                featured: true, // 是否推荐
+                showSize: true // 是否显示文件大小
+            },
+            {
+                id: 2,
+                name: "Windows 10 22H2",
+                description: "稳定可靠的Windows 10最新版本，适合企业和个人用户",
+                category: "system",
+                url: "https://example.com/win10_22h2_x64.iso",
+                size: 4.8,
+                date: "2023-07-10",
+                featured: false,
+                showSize: true
+            },
+            {
+                id: 3,
+                name: "Windows 7 Ultimate SP1",
+                description: "经典稳定的Windows 7终极版，包含SP1更新，兼容性好",
+                category: "system",
+                url: "https://example.com/win7_ultimate_sp1_x64.iso",
+                size: 3.2,
+                date: "2023-06-15",
+                featured: true,
+                showSize: false
+            },
+            {
+                id: 4,
+                name: "Rufus 启动盘制作工具",
+                description: "简单易用的USB启动盘制作工具，支持多种系统镜像格式",
+                category: "utility",
+                url: "https://example.com/rufus.exe",
+                size: 1.2,
+                date: "2023-07-05",
+                featured: true,
+                showSize: true
+            },
+            {
+                id: 5,
+                name: "7-Zip 压缩工具",
+                description: "免费开源的文件压缩和解压工具，支持多种压缩格式",
+                category: "utility",
+                url: "https://example.com/7zip.exe",
+                size: 1.5,
+                date: "2023-06-28",
+                featured: false,
+                showSize: false
+            }
+        ];
+
+        // DOM元素缓存 - 提高性能
+        const filesContainer = document.getElementById('filesContainer'); // 文件容器
+        const totalFilesEl = document.getElementById('totalFiles'); // 总文件数元素
+        const systemFilesEl = document.getElementById('systemFiles'); // 系统文件数元素
+        const recentFilesEl = document.getElementById('recentFiles'); // 最近更新文件数元素
+
+        // 初始化页面 - DOM加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            renderFiles(); // 渲染文件列表
+            updateStats(); // 更新统计信息
+        });
+
+        // 渲染资源列表 - 使用文档片段优化性能
+        function renderFiles() {
+            // 如果没有资源，显示提示信息
+            if (files.length === 0) {
+                filesContainer.innerHTML = '<div class="col-12 text-center py-5"><h4>没有找到资源</h4></div>';
+                return;
+            }
+            
+            // 使用文档片段减少DOM操作次数
+            const fragment = document.createDocumentFragment();
+            
+            // 遍历所有文件并创建卡片
+            files.forEach(file => {
+                const fileIcon = getFileIcon(file.category); // 获取文件图标
+                const col = document.createElement('div'); // 创建列元素
+                col.className = 'col-lg-4 col-md-6'; // 设置列类名
+                
+                // 根据设置决定是否显示文件大小
+                const sizeDisplay = file.showSize ? 
+                    `<div class="file-info">
+                        <div class="file-meta">
+                            <i class="fas fa-hdd"></i>
+                            <span>${file.size} GB</span>
+                        </div>
+                    </div>` : '';
+                
+                // 设置卡片HTML内容
+                col.innerHTML = `
+                    <div class="download-card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="card-title">${file.name} ${file.featured ? '<span class="featured-badge">推荐</span>' : ''}</h5>
+                            <i class="${getCategoryIcon(file.category)}"></i>
+                        </div>
+                        <div class="card-body">
+                            <div class="file-icon">
+                                <i class="${fileIcon}"></i>
+                            </div>
+                            <p class="card-text">${file.description}</p>
+                            ${sizeDisplay}
+                            <a href="${file.url}" class="download-btn" target="_blank">
+                                <i class="fas fa-download me-2"></i>立即下载
+                            </a>
+                        </div>
+                    </div>
+                `;
+                
+                fragment.appendChild(col); // 将列添加到文档片段
+            });
+            
+            // 清空容器并一次性插入所有元素
+            filesContainer.innerHTML = '';
+            filesContainer.appendChild(fragment);
+        }
+
+        // 获取文件图标 - 根据文件分类返回对应的图标类名
+        function getFileIcon(category) {
+            const icons = {
+                'system': 'fab fa-windows', // 系统文件图标
+                'utility': 'fas fa-tools', // 工具文件图标
+                'driver': 'fas fa-microchip', // 驱动文件图标
+                'security': 'fas fa-shield-alt' // 安全文件图标
+            };
+            return icons[category] || 'fas fa-file'; // 返回对应图标或默认文件图标
+        }
+
+        // 获取分类图标 - 根据文件分类返回对应的分类图标类名
+        function getCategoryIcon(category) {
+            const icons = {
+                'system': 'fab fa-windows', // 系统分类图标
+                'utility': 'fas fa-wrench', // 工具分类图标
+                'driver': 'fas fa-cogs', // 驱动分类图标
+                'security': 'fas fa-user-shield' // 安全分类图标
+            };
+            return icons[category] || 'fas fa-file'; // 返回对应图标或默认文件图标
+        }
+
+        // 更新统计信息
+        function updateStats() {
+            totalFilesEl.textContent = files.length; // 更新资源总数
+            
+            // 计算系统镜像数量
+            const systemFiles = files.filter(file => file.category === 'system').length;
+            systemFilesEl.textContent = systemFiles; // 更新系统镜像数量
+            
+            // 计算最近30天内添加的文件数量
+            const thirtyDaysAgo = new Date(); // 获取当前日期
+            thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30); // 计算30天前的日期
+            
+            const recentFiles = files.filter(file => {
+                const fileDate = new Date(file.date); // 将文件日期转换为Date对象
+                return fileDate >= thirtyDaysAgo; // 返回30天内添加的文件
+            });
+            
+            recentFilesEl.textContent = recentFiles.length; // 更新最近更新数量
+        }
+
+        // 保存文件数据到localStorage
+        function saveFiles() {
+            localStorage.setItem('files', JSON.stringify(files)); // 将文件数据转换为JSON字符串并保存
+        }
+    </script>
+</body>
+</html>
