@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>简约网盘 | 资源导航</title>
+    <!-- 引入字体图标 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* 全局样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+
+        /* 页面主体样式 */
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* 头部标题区域 */
+        .header {
+            text-align: center;
+            margin: 40px 0 30px;
+            width: 100%;
+        }
+
+        /* 主标题样式 */
+        .header h1 {
+            font-size: 2.8rem;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        /* 副标题样式 */
+        .header p {
+            font-size: 1.2rem;
+            color: #7f8c8d;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* 卡片容器网格布局 */
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            width: 100%;
+            padding: 20px;
+        }
+
+        /* 单个卡片样式 */
+        .card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        /* 卡片悬停效果 */
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        /* 卡片图标区域 */
+        .card-icon {
+            height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            color: white;
+        }
+
+        /* 不同网盘的图标背景色 */
+        .baidu { background: linear-gradient(135deg, #2932d1, #1a21a0); }
+        .aliyun { background: linear-gradient(135deg, #ff6a00, #ff3c00); }
+        .weiyun { background: linear-gradient(135deg, #00c6ff, #0072ff); }
+        .quark { background: linear-gradient(135deg, #00d2ff, #3a7bd5); }
+        .onedrive { background: linear-gradient(135deg, #0078d4, #106ebe); }
+        .google { background: linear-gradient(135deg, #4285f4, #34a853); }
+        .default { background: linear-gradient(135deg, #8e44ad, #9b59b6); }
+
+        /* 卡片内容区域 */
+        .card-content {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 卡片标题 */
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 12px;
+        }
+
+        /* 卡片描述文本 */
+        .card-description {
+            color: #7f8c8d;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        /* 卡片底部信息 */
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+            padding-top: 15px;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        /* 文件大小标签 */
+        .file-size {
+            background: #f0f7ff;
+            color: #3498db;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        /* 跳转按钮样式 */
+        .card-button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        /* 按钮悬停效果 */
+        .card-button:hover {
+            background: #2980b9;
+        }
+
+        /* 页脚样式 */
+        .footer {
+            margin-top: 60px;
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            padding: 20px;
+        }
+
+        /* 响应式设计 - 平板设备 */
+        @media (max-width: 768px) {
+            .card-container {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 20px;
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .header p {
+                font-size: 1rem;
+            }
+        }
+
+        /* 响应式设计 - 手机设备 */
+        @media (max-width: 480px) {
+            .card-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 页面头部区域 -->
+    <div class="header">
+        <h1>简约网盘导航</h1>
+        <p>精心整理的优质资源，点击卡片直接跳转下载</p>
+    </div>
+    
+    <!-- 卡片容器 -->
+    <div class="card-container" id="cardContainer">
+        <!-- 卡片将通过JavaScript动态生成 -->
+    </div>
+    
+    <!-- 页面底部 -->
+    <div class="footer">
+        <p>© 2023 简约网盘导航 | 设计简洁，体验流畅</p>
+    </div>
+
+    <script>
+        // 网盘资源数据 - 可以轻松添加、修改或删除
+        const resources = [
+            {
+                id: 1,
+                name: '百度网盘资源',
+                type: 'baidu',
+                description: '包含各类学习资料、软件工具和影视资源，更新及时，资源丰富。',
+                url: 'https://pan.baidu.com',
+                size: '2.5GB',
+                icon: 'fab fa-baidu'
+            },
+            {
+                id: 2,
+                name: '阿里云盘资源',
+                type: 'aliyun',
+                description: '高速下载，不限速体验，包含办公软件、设计素材和电子书籍。',
+                url: 'https://www.aliyundrive.com',
+                size: '1.8GB',
+                icon: 'fas fa-cloud'
+            },
+            {
+                id: 3,
+                name: '腾讯微云资源',
+                type: 'weiyun',
+                description: '与QQ、微信无缝衔接，方便快捷的分享体验，游戏资源丰富。',
+                url: 'https://www.weiyun.com',
+                size: '1.2GB',
+                icon: 'fab fa-tencent-weibo'
+            },
+            {
+                id: 4,
+                name: '夸克网盘资源',
+                type: 'quark',
+                description: '简洁高效的网盘体验，专注于学习资料和工具软件分享。',
+                url: 'https://pan.quark.cn',
+                size: '900MB',
+                icon: 'fas fa-bolt'
+            },
+            {
+                id: 5,
+                name: 'OneDrive资源',
+                type: 'onedrive',
+                description: '微软官方云存储，与Office无缝集成，包含各类办公模板。',
+                url: 'https://onedrive.live.com',
+                size: '800MB',
+                icon: 'fab fa-microsoft'
+            },
+            {
+                id: 6,
+                name: 'Google Drive资源',
+                type: 'google',
+                description: '全球最大的云存储服务之一，包含各类国际资源和工具。',
+                url: 'https://drive.google.com',
+                size: '1.5GB',
+                icon: 'fab fa-google-drive'
+            }
+        ];
+
+        // 获取卡片容器
+        const cardContainer = document.getElementById('cardContainer');
+        
+        // 打开链接函数
+        function openLink(url) {
+            // 在新标签页中打开指定URL
+            window.open(url, '_blank');
+        }
+        
+        // 生成卡片HTML
+        function generateCardHTML(resource) {
+            return `
+                <div class="card" data-id="${resource.id}" onclick="openLink('${resource.url}')">
+                    <div class="card-icon ${resource.type}">
+                        <i class="${resource.icon}"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">${resource.name}</h3>
+                        <p class="card-description">${resource.description}</p>
+                        <div class="card-footer">
+                            <span class="file-size">${resource.size}</span>
+                            <button class="card-button">立即查看</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // 渲染所有卡片
+        function renderCards() {
+            // 清空容器
+            cardContainer.innerHTML = '';
+            
+            // 验证资源数据
+            if (!resources || resources.length === 0) {
+                cardContainer.innerHTML = '<p style="text-align:center; grid-column:1/-1; padding:40px; color:#7f8c8d;">暂无资源数据</p>';
+                return;
+            }
+            
+            // 生成并添加卡片
+            resources.forEach(resource => {
+                try {
+                    // 验证资源数据完整性
+                    if (!resource.name || !resource.url) {
+                        console.warn(`资源数据不完整，跳过: ${resource.id}`);
+                        return;
+                    }
+                    
+                    const cardHTML = generateCardHTML(resource);
+                    cardContainer.innerHTML += cardHTML;
+                } catch (error) {
+                    console.error(`生成卡片时出错 (ID: ${resource.id}):`, error);
+                }
+            });
+            
+            // 添加卡片动画
+            addCardAnimations();
+        }
+        
+        // 添加卡片进入视口时的动画
+        function addCardAnimations() {
+            const cards = document.querySelectorAll('.card');
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            // 初始设置卡片透明度为0并稍微下移
+            cards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                observer.observe(card);
+            });
+        }
+        
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始渲染卡片
+            renderCards();
+            
+            // 为所有卡片添加点击动画效果
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.card')) {
+                    const card = e.target.closest('.card');
+                    // 添加点击反馈效果
+                    card.style.transform = 'scale(0.98)';
+                    setTimeout(() => {
+                        card.style.transform = '';
+                    }, 150);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
