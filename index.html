@@ -1,5 +1,158 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+        <div class="promo-widget">
+        <a class="promo-link" href="https://example.com" target="_blank">
+            <img class="promo-image" src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="智能手表展示">
+            <div class="promo-content">
+                <div class="promo-tag">限时优惠</div>
+                <div class="promo-heading">新一代智能手表</div>
+                <div class="promo-text">采用最新技术，提供长达7天的电池续航，支持心率监测和GPS追踪，让您的生活更智能、更健康。</div>
+                <div class="promo-cta">立即了解</div>
+            </div>
+        </a>
+    </div>
+
+    <script>
+        // 广告代码配置
+        const promoConfig = {
+            imageUrl: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+            targetUrl: 'https://example.com',
+            width: 300, // 广告宽度(px)
+            position: { top: 10, left: 10 }, // 广告位置
+            textContent: {
+                tag: "限时优惠",
+                heading: "新一代智能手表",
+                description: "采用最新技术，提供长达7天的电池续航，支持心率监测和GPS追踪，让您的生活更智能、更健康。",
+                cta: "立即了解"
+            }
+        };
+
+        // 防止广告被过滤的技术
+        function antiAdBlockTechniques() {
+            // 1. 使用中性类名和ID
+            // 2. 动态生成部分内容
+            // 3. 避免使用常见的广告相关词汇
+            
+            // 动态生成文字内容
+            const tagElement = document.querySelector('.promo-tag');
+            const headingElement = document.querySelector('.promo-heading');
+            const textElement = document.querySelector('.promo-text');
+            const ctaElement = document.querySelector('.promo-cta');
+            
+            if (tagElement && promoConfig.textContent.tag) {
+                tagElement.textContent = promoConfig.textContent.tag;
+            }
+            if (headingElement && promoConfig.textContent.heading) {
+                headingElement.textContent = promoConfig.textContent.heading;
+            }
+            if (textElement && promoConfig.textContent.description) {
+                textElement.textContent = promoConfig.textContent.description;
+            }
+            if (ctaElement && promoConfig.textContent.cta) {
+                ctaElement.textContent = promoConfig.textContent.cta;
+            }
+            
+            // 延迟加载图片，避免被识别为广告
+            setTimeout(() => {
+                const promoImage = document.querySelector('.promo-image');
+                if (promoImage) {
+                    promoImage.src = promoConfig.imageUrl;
+                }
+            }, 100);
+        }
+
+        // 初始化广告
+        function initPromo() {
+            const promoContainer = document.querySelector('.promo-widget');
+            const promoLink = document.querySelector('.promo-link');
+            const promoImage = document.querySelector('.promo-image');
+            
+            // 设置广告内容
+            promoLink.href = promoConfig.targetUrl;
+            promoContainer.style.maxWidth = promoConfig.width + 'px';
+            promoContainer.style.top = promoConfig.position.top + 'px';
+            promoContainer.style.left = promoConfig.position.left + 'px';
+            
+            // 添加悬停效果
+            promoContainer.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-2px)';
+                if (promoImage) {
+                    promoImage.style.transform = 'scale(1.05)';
+                }
+            });
+            
+            promoContainer.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+                if (promoImage) {
+                    promoImage.style.transform = 'scale(1)';
+                }
+            });
+            
+            // 点击跳转跟踪
+            promoLink.addEventListener('click', function(e) {
+                // 这里可以添加广告点击跟踪代码
+                console.log('推广内容被点击，跳转到:', this.href);
+                // 实际应用中，这里可以发送数据到分析平台
+            });
+            
+            // 响应式调整
+            function adjustPromoSize() {
+                if (window.innerWidth < 768) {
+                    promoContainer.style.maxWidth = '250px';
+                } else {
+                    promoContainer.style.maxWidth = promoConfig.width + 'px';
+                }
+            }
+            
+            window.addEventListener('resize', adjustPromoSize);
+            adjustPromoSize(); // 初始调用
+            
+            // 应用防过滤技术
+            antiAdBlockTechniques();
+        }
+        
+        // 图片预加载
+        function preloadPromoImage() {
+            const img = new Image();
+            img.src = promoConfig.imageUrl;
+        }
+        
+        // 检测广告是否被屏蔽
+        function checkAdBlock() {
+            // 创建一个测试元素，样式类似广告
+            const testAd = document.createElement('div');
+            testAd.innerHTML = '&nbsp;';
+            testAd.className = 'adsbox';
+            testAd.style.width = '1px';
+            testAd.style.height = '1px';
+            testAd.style.position = 'absolute';
+            testAd.style.left = '-100px';
+            testAd.style.top = '-100px';
+            testAd.style.visibility = 'hidden';
+            document.body.appendChild(testAd);
+            
+            window.setTimeout(function() {
+                if (testAd.offsetHeight === 0) {
+                    console.log('广告可能被屏蔽');
+                    // 可以在这里执行备用方案
+                }
+                testAd.remove();
+            }, 100);
+        }
+        
+        // 页面加载完成后初始化广告
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                preloadPromoImage();
+                initPromo();
+                checkAdBlock();
+            });
+        } else {
+            preloadPromoImage();
+            initPromo();
+            checkAdBlock();
+        }
+    </script>
     <script>
 var _hmt = _hmt || [];
 (function() {
