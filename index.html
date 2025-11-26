@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mindows下载站</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+            color: #fff;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding-top: 140px;
+            padding-bottom: 100px;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 25px 0;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 12px;
+            margin: 15px 0;
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 8px;
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+            background: linear-gradient(to right, #ff8a00, #da1b60);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        
+        .search-container {
+            margin: 25px 0;
+            text-align: center;
+        }
+        
+        #searchInput {
+            width: 100%;
+            max-width: 500px;
+            padding: 12px 18px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 40px;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+        
+        #searchInput::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        #searchInput:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 3px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .categories {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 15px 0;
+        }
+        
+        .category-btn {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 25px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        .category-btn:hover, .category-btn.active {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .category-section {
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: none;
+        }
+        
+        .category-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .section-title {
+            font-size: 1.6rem;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1.5px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 15px;
+        }
+        
+        .resource-card {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 18px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+        }
+        
+        .resource-card:hover {
+            transform: translateY(-8px);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .resource-title {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+        }
+        
+        .resource-code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            margin: 12px 0;
+            word-break: break-all;
+        }
+        
+        .resource-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            opacity: 0.8;
+            margin-top: 12px;
+        }
+        
+        .download-btn {
+            display: inline-block;
+            background: linear-gradient(45deg, #ff8a00, #da1b60);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 12px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        
+        .download-btn:hover {
+            transform: scale(1.03);
+            box-shadow: 0 3px 10px rgba(218, 27, 96, 0.4);
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 30px;
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 25px 0;
+            margin-top: 25px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        
+        .link-item {
+            color: #ff8a00;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .link-item:hover {
+            color: #da1b60;
+            text-decoration: underline;
+        }
+        
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 12px 0;
+            box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: white;
+            text-decoration: none;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+            padding: 4px 8px;
+            border-radius: 6px;
+        }
+        
+        .nav-item:hover, .nav-item.active {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-item i {
+            font-size: 1.2rem;
+            margin-bottom: 3px;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .social-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            padding: 8px;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .social-btn:hover {
+            transform: translateY(-4px);
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .social-btn i {
+            font-size: 1.4rem;
+            margin-bottom: 4px;
+        }
+        
+        .social-btn span {
+            font-size: 0.7rem;
+        }
+        
+        /* 顶部广告区域 */
+        .top-ad-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.9);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 12px;
+            z-index: 1100;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        .ad-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .ad-title {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #ff8a00;
+        }
+        
+        .close-ad {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .close-ad:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
+        }
+        
+        .ad-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+        }
+        
+        .ad-image {
+            flex: 1;
+            min-width: 120px;
+            height: 80px;
+            background: linear-gradient(45deg, #3498db, #8e44ad);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.8rem;
+        }
+        
+        .ad-text {
+            flex: 2;
+            min-width: 120px;
+        }
+        
+        .ad-text p {
+            margin: 4px 0;
+            font-size: 0.8rem;
+        }
+        
+        .ad-link {
+            display: inline-block;
+            background: linear-gradient(45deg, #ff8a00, #da1b60);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 8px;
+            transition: all 0.3s ease;
+            font-size: 0.8rem;
+        }
+        
+        .ad-link:hover {
+            transform: scale(1.03);
+            box-shadow: 0 3px 10px rgba(218, 27, 96, 0.4);
+        }
+        
+        .ad-message {
+            background: rgba(255, 100, 100, 0.2);
+            border: 1px solid rgba(255, 100, 100, 0.5);
+            border-radius: 6px;
+            padding: 8px;
+            margin-top: 12px;
+            display: none;
+            text-align: center;
+            font-size: 0.8rem;
+        }
+        
+        .ad-message.show {
+            display: block;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .resources-grid {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            }
+            
+            .bottom-nav {
+                flex-wrap: wrap;
+                height: auto;
+            }
+            
+            .nav-item {
+                flex: 1 0 20%;
+            }
+            
+            .ad-content {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .ad-image {
+                width: 100%;
+            }
+            
+            .top-ad-container {
+                padding: 10px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .resources-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-item {
+                flex: 1 0 50%;
+            }
+            
+            .social-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1rem;
+            }
+            
+            .top-ad-container {
+                padding: 8px;
+            }
+            
+            .ad-title {
+                font-size: 0.9rem;
+            }
+            
+            .ad-text p {
+                font-size: 0.75rem;
+            }
+            
+            .ad-link {
+                padding: 5px 10px;
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部广告区域 -->
+    <div class="top-ad-container" id="adContainer">
+        <div class="ad-header">
+            <div class="ad-title">广告推广</div>
+            <button class="close-ad" id="closeAdBtn">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="ad-content" id="adContent">
+            <!-- 广告内容将通过JavaScript动态生成 -->
+        </div>
+        <div class="ad-message" id="adMessage">
+            <i class="fas fa-exclamation-triangle"></i> 您已屏蔽广告，请支持我们继续提供优质服务
+        </div>
+    </div>
+    
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-download"></i> Mindows下载站</h1>
+            <p class="subtitle">提供各种系统镜像资源的下载服务</p>
+        </header>
+        
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="搜索系统名称或代码...">
+        </div>
+        
+        <div class="categories">
+            <button class="category-btn active" data-category="all">全部</button>
+            <button class="category-btn" data-category="windows">Windows</button>
+            <button class="category-btn" data-category="linux">Linux</button>
+            <button class="category-btn" data-category="oem">PE系统</button>
+        </div>
+        
+        <!-- 全部资源 -->
+        <section id="all-section" class="category-section active">
+            <h2 class="section-title"><i class="fas fa-globe"></i> 所有系统</h2>
+            <div class="resources-grid" id="all-resources">
+                <!-- 资源卡片将通过JavaScript动态生成 -->
+            </div>
+        </section>
+        
+        <!-- Windows资源 -->
+        <section id="windows-section" class="category-section">
+            <h2 class="section-title"><i class="fab fa-windows"></i> Windows系统</h2>
+            <div class="resources-grid" id="windows-resources">
+                <!-- 资源卡片将通过JavaScript动态生成 -->
+            </div>
+        </section>
+        
+        <!-- Linux资源 -->
+        <section id="linux-section" class="category-section">
+            <h2 class="section-title"><i class="fab fa-linux"></i> Linux系统</h2>
+            <div class="resources-grid" id="linux-resources">
+                <!-- 资源卡片将通过JavaScript动态生成 -->
+            </div>
+        </section>
+        
+        <!-- OEM系统 -->
+        <section id="oem-section" class="category-section">
+            <h2 class="section-title"><i class="fas fa-tag"></i> OEM系统</h2>
+            <div class="resources-grid" id="oem-resources">
+                <!-- 资源卡片将通过JavaScript动态生成 -->
+            </div>
+        </section>
+        
+        <div class="footer">
+            <div class="links">
+                <a href="#" class="link-item">关于我们</a>
+                <a href="#" class="link-item">使用条款</a>
+                <a href="#" class="link-item">隐私政策</a>
+                <a href="#" class="link-item">联系我们</a>
+            </div>
+            <p>© 2025 Mindows下载站 - 提供安全可靠的系统镜像下载服务</p>
+        </div>
+    </div>
+    
+    <nav class="bottom-nav">
+        <a href="#" class="nav-item active">
+            <i class="fas fa-home"></i>
+            <span>首页</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="fas fa-search"></i>
+            <span>搜索</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="fas fa-download"></i>
+            <span>下载</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="fas fa-info-circle"></i>
+            <span>关于</span>
+        </a>
+    </nav>
+
+    <!-- 社交媒体和视频网站按钮 -->
+    <div class="social-links">
+        <a href="https://github.com" target="_blank" class="social-btn">
+            <i class="fab fa-github"></i>
+            <span>GitHub</span>
+        </a>
+        <a href="https://www.youtube.com" target="_blank" class="social-btn">
+            <i class="fab fa-youtube"></i>
+            <span>YouTube</span>
+        </a>
+        <a href="https://www.bilibili.com" target="_blank" class="social-btn">
+            <i class="fab fa-bilibili"></i>
+            <span>B站</span>
+        </a>
+        <a href="https://www.twitch.tv" target="_blank" class="social-btn">
+            <i class="fab fa-twitch"></i>
+            <span>Twitch</span>
+        </a>
+        <a href="https://www.vimeo.com" target="_blank" class="social-btn">
+            <i class="fab fa-vimeo"></i>
+            <span>Vimeo</span>
+        </a>
+    </div>
+
+    <script>
+        // 系统资源数据 - 现在包含下载链接
+        const resources = [
+            {
+                id: 1,
+                title: "Windows 10 22H2 专业版",
+                code: "zh-cn_windows_10_consumer_editions_version_22h2_updated_nov_2024_x64_dvd_3eeacab9_2.iso",
+                category: "windows",
+                size: "6.5 GB",
+                date: "2024-05-15",
+                downloadLink: "https://pan.hotpe.top/f/dzrux/zh-cn_windows_10_consumer_editions_version_22h2_updated_nov_2024_x64_dvd_3eeacab9_2.iso"
+            },
+            {
+                id: 2,
+                title: "Windows 11 24H2 专业版",
+                code: "26100.2152.241004-1811.GE_RELEASE_SVC_PROD2_CLIENTMULTICOMBINED_UUP_A64FRE_ZH-CN_FIX.ISO",
+                category: "windows",
+                size: "8.71 GB",
+                date: "2024-06-20",
+                downloadLink: "https://d1.99266.cn/iso/Windows/Win11/24H2/26100.2152.241004-1811.GE_RELEASE_SVC_PROD2_CLIENTMULTICOMBINED_UUP_A64FRE_ZH-CN_FIX.ISO"
+            },
+            {
+                id: 3,
+                title: "Windows Server 2022",
+                code: "zh-cn_windows_server_2022_updated_june_2024_x64_dvd_8c5a802d.iso",
+                category: "windows",
+                size: "5.7 GB",
+                date: "2024-07-10",
+                downloadLink: "https://d1.99266.cn/iso/Windows/Server2022/zh-cn_windows_server_2022_updated_june_2024_x64_dvd_8c5a802d.iso"
+            },
+            {
+                id: 4,
+                title: "Microsoft Office 2021",
+                code: "ProPlus2021Retail.img",
+                category: "windows",
+                size: "4.9 GB",
+                date: "2024-08-05",
+                downloadLink: "https://officecdn.microsoft.com/db/492350F6-3A01-4F97-B9C0-C7C6DDF67D60/media/zh-CN/ProPlus2021Retail.img"
+            },
+            {
+                id: 5,
+                title: "HEU_KMS_Activator",
+                code: "HEU_KMS_Activator_v63.2.0.rar",
+                category: "windows",
+                size: "0.1 GB",
+                date: "2024-09-12",
+                downloadLink: "https://edgeone.gh-proxy.com/https://github.com/zbezj/HEU_KMS_Activator/releases/download/63.2.0/HEU_KMS_Activator_v63.2.0.rar"
+            },
+            {
+                id: 6,
+                title: "冰封一键重装",
+                code: "bfcz-18.0.exe",
+                category: "windows",
+                size: "0.18 GB",
+                date: "2024-10-01",
+                downloadLink: "http://down.bfxitong.com/2024/bfcz-18.0.exe"
+            },
+            {
+                id: 7,
+                title: "Windows10LTSC 2021",
+                code: "Win10_LTSC_2021_19044.4598.iso",
+                category: "windows",
+                size: "4.7 GB",
+                date: "2024-10-15",
+                downloadLink: "https://pan.hotpe.top/f/dAqCx/Win10_LTSC_2021_19044.4598.iso"
+            },
+            {
+                id: 8,
+                title: "Windows7旗舰版",
+                code: "WIN7%20SP1%209N1.iso",
+                category: "windows",
+                size: "3.2 GB",
+                date: "2024-11-01",
+                downloadLink: "https://d1.99266.cn/iso/Windows/Win7/WIN7%20SP1%209N1.iso"
+            },
+            {
+                id: 9,
+                title: "WindowsXP专业版",
+                code: "WinXP_SP3_V4(IE8%2BWMP11).iso",
+                category: "windows",
+                size: "0.6 GB",
+                date: "2024-11-10",
+                downloadLink: "https://d1.99266.cn/iso/Windows/WinXP/WinXP_SP3_V4(IE8%2BWMP11).iso"
+            },
+            {
+                id: 10,
+                title: "Windows8.1专业版",
+                code: "cn_windows_8.1_pro_vl_with_update_x64_dvd_6050873.iso",
+                category: "windows",
+                size: "4.1GB",
+                date: "2024-11-15",
+                downloadLink: "https://d1.99266.cn/iso/Windows/Win8/cn_windows_8.1_pro_vl_with_update_x64_dvd_6050873.iso"
+            },
+            {
+                id: 11,
+                title: "WindowsVista",
+                code: "cn_windows_vista_with_sp2_x64_dvd_x15-36322.iso",
+                category: "windows",
+                size: "3.5 GB",
+                date: "2024-11-20",
+                downloadLink: "https://d1.99266.cn/iso/Windows/Vista/cn_windows_vista_with_sp2_x64_dvd_x15-36322.iso"
+            },
+            {
+                id: 12,
+                title: "VM Workstation Pro",
+                code: "VMware-workstation-full-17.6.3-24583834.exe",
+                category: "windows",
+                size: "0.4 GB",
+                date: "2024-11-22",
+                downloadLink: "https://edgeone.gh-proxy.org/https://github.com/yanghao5/VM-download/releases/download/vw-17.6.3/VMware-workstation-full-17.6.3-24583834.exe"
+            },
+            {
+                id: 13,
+                title: "待定",
+                code: "Win11_24H2_Chinese_Simplified_x64.iso",
+                category: "windows",
+                size: "6.8 GB",
+                date: "2024-11-25",
+                downloadLink: "https://example.com/windows-11-x64.iso"
+            },
+            {
+                id: 14,
+                title: "HotPe",
+                code: "HotPE_Client_V0.4.251019.7z",
+                category: "oem",
+                size: "0.7GB",
+                date: "2024-11-24",
+                downloadLink: "https://fb.myzwq.cn/k51bo5WPoFuhnJ0/XHWcoX1yXH-SmZKOoJKgXHWcoX1yjHCZlpKboYyDXVthW19iXl1eZltkpw/HotPE_Client_V0.4.251019.7z?token=MGE2ZmUz&expiry=1764201600&fileName=HotPE_Client_V0.4.251019.7z"
+            },
+            {
+                id: 15,
+                title: "Ubuntu 25.10",
+                code: "ubuntu-25.10-desktop-amd64.iso",
+                category: "linux",
+                size: "5.3 GB",
+                date: "2024-09-20",
+                downloadLink: "https://mirrors.cqu.edu.cn/ubuntu-releases/questing/ubuntu-25.10-desktop-amd64.iso"
+            },
+            {
+                id: 16,
+                title: "Kali Linux 2025.3",
+                code: "kali-linux-2025.3-installer-purple-amd64.iso",
+                category: "linux",
+                size: "4.2 GB",
+                date: "2024-10-05",
+                downloadLink: "https://mirrors.cqu.edu.cn/kali-images/current/kali-linux-2025.3-installer-purple-amd64.iso"
+            },
+            {
+                id: 17,
+                title: "Debian-13.2.0",
+                code: "debian-13.2.0-amd64-netinst.iso",
+                category: "linux",
+                size: "0.7 GB",
+                date: "2024-11-01",
+                downloadLink: "https://mirrors.cqu.edu.cn/debian-cd/current/amd64/iso-cd/debian-13.2.0-amd64-netinst.iso"
+            }
+        ];
+
+        // 广告数据
+        const ads = [
+            {
+                title: "麦块联机",
+                image: "https://vip.123pan.cn/1829908768/aaa/logo2.png",
+                text: "低价高配面板服，可免费开服。",
+                link: "https://minekuai.com/auth/register/DP5qViy"
+            },
+            {
+                title: "雨云",
+                image: "https://ricedoc.handyplus.cn/ad/rainyun.webp",
+                text: "性价比云服务器，极力推荐。",
+                link: "https://www.rainyun.com/MzcyODUw_"
+            },
+            {
+                title: "网络安全防护",
+                image: "安全防护",
+                text: "企业级安全解决方案，保护您的数字资产。",
+                link: "#"
+            },
+            {
+                title: "虚拟机软件",
+                image: "虚拟机",
+                text: "跨平台虚拟化技术，轻松创建多个操作系统环境。",
+                link: "#"
+            },
+            {
+                title: "数据恢复服务",
+                image: "数据恢复",
+                text: "专业数据恢复服务，帮助您找回丢失的重要文件。",
+                link: "#"
+            },
+            {
+                title: "办公套件推荐",
+                image: "办公套件",
+                text: "高效办公必备工具，提升工作效率。",
+                link: "#"
+            },
+            {
+                title: "编程学习平台",
+                image: "编程学习",
+                text: "一站式编程学习平台，涵盖多种编程语言。",
+                link: "#"
+            },
+            {
+                title: "游戏加速器",
+                image: "游戏加速",
+                text: "专为游戏玩家打造的网络加速服务。",
+                link: "#"
+            }
+        ];
+
+        // DOM元素
+        const searchInput = document.getElementById('searchInput');
+        const categoryButtons = document.querySelectorAll('.category-btn');
+        const categorySections = document.querySelectorAll('.category-section');
+        const allResourcesContainer = document.getElementById('all-resources');
+        const windowsResourcesContainer = document.getElementById('windows-resources');
+        const linuxResourcesContainer = document.getElementById('linux-resources');
+        const oemResourcesContainer = document.getElementById('oem-resources');
+        const adContainer = document.getElementById('adContainer');
+        const adContent = document.getElementById('adContent');
+        const closeAdBtn = document.getElementById('closeAdBtn');
+        const adMessage = document.getElementById('adMessage');
+
+        // 初始化页面
+        function initPage() {
+            renderResources();
+            setupEventListeners();
+            showRandomAd();
+            checkAdBlocker();
+        }
+
+        // 渲染资源
+        function renderResources() {
+            // 清空容器
+            allResourcesContainer.innerHTML = '';
+            windowsResourcesContainer.innerHTML = '';
+            linuxResourcesContainer.innerHTML = '';
+            oemResourcesContainer.innerHTML = '';
+            
+            // 根据类别渲染资源
+            resources.forEach(resource => {
+                const card = createResourceCard(resource);
+                
+                // 添加到所有资源
+                allResourcesContainer.appendChild(card.cloneNode(true));
+                
+                // 根据类别添加到对应容器
+                switch(resource.category) {
+                    case 'windows':
+                        windowsResourcesContainer.appendChild(card);
+                        break;
+                    case 'linux':
+                        linuxResourcesContainer.appendChild(card);
+                        break;
+                    case 'oem':
+                        oemResourcesContainer.appendChild(card);
+                        break;
+                }
+            });
+        }
+
+        // 创建资源卡片
+        function createResourceCard(resource) {
+            const card = document.createElement('div');
+            card.className = 'resource-card';
+            card.innerHTML = `
+                <h3 class="resource-title">${resource.title}</h3>
+                <div class="resource-code">${resource.code}</div>
+                <div class="resource-meta">
+                    <span><i class="fas fa-file-archive"></i> ${resource.size}</span>
+                    <span><i class="fas fa-calendar"></i> ${resource.date}</span>
+                </div>
+                <a href="${resource.downloadLink}" class="download-btn" data-id="${resource.id}" target="_blank">
+                    <i class="fas fa-download"></i> 立即下载
+                </a>
+            `;
+            return card;
+        }
+
+        // 设置事件监听器
+        function setupEventListeners() {
+            // 搜索功能
+            searchInput.addEventListener('input', handleSearch);
+            
+            // 分类切换
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // 更新按钮状态
+                    categoryButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    
+                    // 显示对应分类
+                    const category = button.dataset.category;
+                    categorySections.forEach(section => {
+                        section.classList.remove('active');
+                        if (section.id === `${category}-section`) {
+                            section.classList.add('active');
+                        }
+                    });
+                });
+            });
+            
+            // 下载按钮点击
+            document.addEventListener('click', (e) => {
+                if (e.target.classList.contains('download-btn') || 
+                    e.target.parentElement.classList.contains('download-btn')) {
+                    const button = e.target.classList.contains('download-btn') ? 
+                                  e.target : e.target.parentElement;
+                    const id = parseInt(button.dataset.id);
+                    const resource = resources.find(r => r.id === id);
+                    // 直接跳转到下载链接
+                    window.open(resource.downloadLink, '_blank');
+                }
+            });
+            
+            // 关闭广告按钮
+            closeAdBtn.addEventListener('click', () => {
+                adContainer.style.display = 'none';
+            });
+        }
+
+        // 搜索处理
+        function handleSearch() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            
+            // 隐藏所有资源卡片
+            const cards = document.querySelectorAll('.resource-card');
+            cards.forEach(card => {
+                card.style.display = 'none';
+            });
+            
+            // 如果搜索词为空，显示所有资源
+            if (!searchTerm) {
+                cards.forEach(card => {
+                    card.style.display = 'block';
+                });
+                return;
+            }
+            
+            // 根据搜索词过滤并显示资源
+            resources.forEach(resource => {
+                const title = resource.title.toLowerCase();
+                const code = resource.code.toLowerCase();
+                
+                if (title.includes(searchTerm) || code.includes(searchTerm)) {
+                    // 显示所有卡片（因为是动态生成的）
+                    const allCards = document.querySelectorAll('.resource-card');
+                    allCards.forEach(card => {
+                        const cardTitle = card.querySelector('.resource-title').textContent.toLowerCase();
+                        const cardCode = card.querySelector('.resource-code').textContent.toLowerCase();
+                        
+                        if (cardTitle.includes(searchTerm) || cardCode.includes(searchTerm)) {
+                            card.style.display = 'block';
+                        }
+                    });
+                }
+            });
+        }
+
+        // 显示随机广告
+        function showRandomAd() {
+            // 生成随机索引
+            const randomIndex = Math.floor(Math.random() * ads.length);
+            const ad = ads[randomIndex];
+            
+            // 渲染广告内容
+            adContent.innerHTML = `
+                <div class="ad-image">
+                    <i class="fas fa-ad"></i> ${ad.image}
+                </div>
+                <div class="ad-text">
+                    <p><strong>${ad.title}</strong></p>
+                    <p>${ad.text}</p>
+                    <a href="${ad.link}" class="ad-link" target="_blank">查看详情</a>
+                </div>
+            `;
+        }
+
+        // 广告屏蔽检测
+        function checkAdBlocker() {
+            // 创建一个测试元素
+            const testElement = document.createElement('div');
+            testElement.innerHTML = '<div style="display:none;">test</div>';
+            testElement.className = 'adsbygoogle';
+            document.body.appendChild(testElement);
+            
+            // 检查元素是否被隐藏（广告拦截器通常会隐藏此类元素）
+            setTimeout(() => {
+                if (testElement.offsetHeight === 0) {
+                    // 检测到广告屏蔽
+                    adMessage.classList.add('show');
+                }
+                document.body.removeChild(testElement);
+            }, 100);
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', initPage);
+    </script>
+</body>
+</html>
