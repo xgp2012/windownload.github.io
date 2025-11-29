@@ -3,213 +3,192 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mindows下载站 - 关于我们</title>
+    <title>关于 Mindows 下载站</title>
     <style>
+        /* 基础样式重置 */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Microsoft YaHei', Arial, sans-serif;
         }
-        
+
+        /* 主体背景与字体 */
         body {
-            background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
-            color: #f0f0f0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%); /* 深黑色渐变背景 */
+            color: #f0f0f0; /* 浅灰色文字 */
+            line-height: 1.6;
+            padding: 20px;
             min-height: 100vh;
         }
-        
+
+        /* 页面容器 */
         .container {
-            max-width: 1200px;
+            max-width: 1000px;
             margin: 0 auto;
-            padding: 2rem;
+            padding: 20px;
         }
-        
-        header {
-            text-align: center;
-            padding: 2rem 0;
-            border-bottom: 1px solid #ff6b00;
-            margin-bottom: 2rem;
-        }
-        
+
+        /* 标题样式 */
         h1 {
-            font-size: 2.5rem;
-            color: #ff6b00;
-            margin-bottom: 0.5rem;
-        }
-        
-        .subtitle {
-            color: #ccc;
-            font-size: 1.2rem;
-        }
-        
-        .content {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-        
-        .about-text {
-            flex: 1;
-            min-width: 300px;
-        }
-        
-        .about-text h2 {
-            color: #ff6b00;
-            margin-bottom: 1rem;
-            font-size: 1.8rem;
-        }
-        
-        .about-text p {
-            line-height: 1.8;
-            margin-bottom: 1rem;
-            color: #e0e0e0;
-        }
-        
-        .features {
-            flex: 1;
-            min-width: 300px;
-        }
-        
-        .features h2 {
-            color: #ff6b00;
-            margin-bottom: 1rem;
-            font-size: 1.8rem;
-        }
-        
-        .feature-list {
-            list-style-type: none;
-        }
-        
-        .feature-list li {
-            padding: 0.8rem 0;
-            border-bottom: 1px solid #333;
-            display: flex;
-            align-items: center;
-        }
-        
-        .feature-list li:before {
-            content: "✓";
-            color: #ff6b00;
-            font-weight: bold;
-            margin-right: 10px;
-        }
-        
-        .groups {
-            background: rgba(30, 30, 30, 0.8);
-            border-radius: 10px;
-            padding: 2rem;
             text-align: center;
-            margin-top: 2rem;
-            border: 1px solid #ff6b00;
+            color: #ff8c00; /* 橙色标题 */
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 10px rgba(255, 140, 0, 0.5); /* 橙色发光效果 */
         }
-        
-        .groups h2 {
-            color: #ff6b00;
+
+        /* 段落样式 */
+        p {
             margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            text-align: justify;
         }
-        
+
+        /* 关于内容区域 */
+        .about-content {
+            background: rgba(30, 30, 30, 0.8); /* 半透明深色背景 */
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5); /* 阴影效果 */
+            margin-bottom: 30px;
+        }
+
+        /* 交流群区域标题 */
+        .group-section h2 {
+            color: #ff8c00;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+
+        /* 交流群按钮容器 */
         .group-buttons {
             display: flex;
             flex-wrap: wrap;
+            gap: 20px;
             justify-content: center;
-            gap: 1.5rem;
         }
-        
+
+        /* 交流群按钮样式 */
         .group-btn {
-            background: linear-gradient(to right, #ff6b00, #ff8c00);
+            background: linear-gradient(to right, #ff8c00, #ff5500); /* 橙色渐变 */
             color: white;
             border: none;
-            padding: 1rem 2rem;
-            border-radius: 50px;
+            padding: 15px 25px;
             font-size: 1.1rem;
+            border-radius: 50px; /* 圆角按钮 */
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(255, 107, 0, 0.3);
-            display: flex;
-            align-items: center;
+            box-shadow: 0 4px 15px rgba(255, 140, 0, 0.3); /* 按钮阴影 */
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            min-width: 200px; /* 最小宽度保证按钮大小 */
         }
-        
+
+        /* 按钮悬停效果 */
         .group-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(255, 107, 0, 0.5);
+            box-shadow: 0 6px 20px rgba(255, 140, 0, 0.5);
         }
-        
-        .group-btn i {
-            margin-right: 8px;
-            font-size: 1.2rem;
+
+        /* 特色功能部分 */
+        .features {
+            background: rgba(30, 30, 30, 0.8);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
         }
-        
+
+        .features h2 {
+            color: #ff8c00;
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+
+        .features ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .features li {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .features li:before {
+            content: "✓";
+            color: #ff8c00;
+            position: absolute;
+            left: 0;
+        }
+
+        /* 底部信息 */
         footer {
             text-align: center;
-            padding: 2rem 0;
-            color: #888;
-            border-top: 1px solid #333;
-            margin-top: 2rem;
+            margin-top: 30px;
+            padding: 20px;
+            color: #aaa;
+            font-size: 0.9rem;
         }
-        
+
+        /* 响应式设计 */
         @media (max-width: 768px) {
-            .content {
-                flex-direction: column;
+            .container {
+                padding: 10px;
             }
-            
+
+            h1 {
+                font-size: 2rem;
+            }
+
             .group-buttons {
                 flex-direction: column;
                 align-items: center;
             }
-            
+
             .group-btn {
-                width: 80%;
+                width: 100%;
+                max-width: 300px;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>Mindows下载站</h1>
-            <p class="subtitle">专注系统资源分享的优质平台</p>
-        </header>
-        
-        <div class="content">
-            <div class="about-text">
-                <h2>关于我们</h2>
-                <p>Mindows下载站是一个专注于系统资源分享的专业平台。我们致力于为用户提供最新、最全的系统镜像文件、优质程序和实用工具。</p>
-                <p>我们的网站由一名热爱技术、追求卓越的学牲组成，还有一群精神股东，因此我们不断优化服务，确保每一位用户都能获得最佳体验。</p>
-                <p>无论是Windows系统还是其他操作系统，我们都会尽可能及时更新最新的官方版本，让用户能够方便快捷地获取所需资源。</p>
-            </div>
-            
-            <div class="features">
-                <h2>核心优势</h2>
-                <ul class="feature-list">
-                    <li>常见的系统ISO一键直链下载</li>
-                    <li>安全的直链下载渠道</li>
-                    <li>严格安全检测，保障文件安全</li>
-                    <li>专业的技术支持团队</li>
-                    <li>简洁易用的操作界面</li>
-                    <li>网站永久托管与GitHub</li>
-                </ul>
-            </div>
+        <h1>关于 Mindows 下载站</h1>
+
+        <div class="about-content">
+            <p>Mindows 下载站致力于为广大用户提供最新、最全、最安全的系统镜像资源。我们精心收集了各类 Windows 和 Linux 系统的发行版及 PE 镜像，确保用户能够便捷地获取所需的操作系统。</p>
+            <p>我们的目标是打造一个高效、可靠的系统镜像下载平台，让用户轻松找到并下载高质量的系统安装包。无论您是需要日常办公系统还是专业应用环境，Mindows 下载站都能满足您的需求。</p>
+            <p>为了更好地服务社区用户，我们建立了多个交流群组，方便大家讨论系统使用技巧、分享资源和解决问题。加入我们的社群，与更多爱好者一起交流学习！</p>
         </div>
-        
-        <div class="groups">
+
+        <div class="group-section">
             <h2>加入我们的交流群</h2>
             <div class="group-buttons">
-                <button class="group-btn" onclick="alert('请扫描二维码添加QQ群')">
-                    <i>👥</i> QQ交流群1（还没有）
-                </button>
-                <button class="group-btn" onclick="alert('请扫描二维码添加QQ群')">
-                    <i>👥</i> 123
-                </button>
-                <button class="group-btn" onclick="alert('请扫描二维码添加QQ群')">
-                    <i>👥</i> 123
-                </button>
+                <a href="https://jq.qq.com/?_wv=1027&k=your_qq_group_link_1" target="_blank" class="group-btn">QQ交流群 1</a>
+                <a href="https://jq.qq.com/?_wv=1027&k=your_qq_group_link_2" target="_blank" class="group-btn">QQ交流群 2</a>
+                <a href="https://t.me/your_telegram_group" target="_blank" class="group-btn">Telegram 群组</a>
             </div>
         </div>
-        
+
+        <div class="features">
+            <h2>我们的特色功能</h2>
+            <ul>
+                <li>海量系统镜像资源，涵盖主流操作系统版本</li>
+                <li>快速稳定的下载通道，保障用户流畅体验</li>
+                <li>完善的分类检索功能，精准定位所需资源</li>
+                <li>持续更新，第一时间提供最新系统镜像</li>
+                <li>专业的技术支持团队，解决用户使用问题</li>
+            </ul>
+        </div>
+
         <footer>
-            <p>&copy; 2025 Mindows下载站. All rights reserved.</p>
-            <p>网站地址：www.947563.xyz</p>
+            <p>&copy; 2025 Mindows 下载站. 保留所有权利.</p>
+            <p>本页面设计遵循为人民服务原则，旨在提供良好的用户体验 [[1]].</p>
         </footer>
     </div>
 </body>
