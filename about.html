@@ -3,399 +3,214 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>关于我们 - Mindows下载站</title>
+    <title>Mindows下载站 - 关于我们</title>
     <style>
-        /* 基础样式重置 */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
         }
-
-        /* 页面整体样式 */
+        
         body {
-            background-color: #f8f9fa;
-            color: #333;
-            line-height: 1.6;
-            overflow-x: hidden;
-            display: flex;
-            flex-direction: column;
+            background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
+            color: #f0f0f0;
             min-height: 100vh;
         }
-
-        /* 页面主内容区样式 */
-        main {
+        
+        .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 4rem 2rem;
-            flex: 1;
-        }
-
-        /* 页面标题样式 */
-        .page-title {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
-
-        .page-title h1 {
-            font-size: 2.5rem;
-            color: #2c3e50;
-            margin-bottom: 1rem;
-        }
-
-        .page-title p {
-            font-size: 1.2rem;
-            color: #7f8c8d;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        /* 卡片容器样式 */
-        .cards-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-bottom: 4rem;
-        }
-
-        /* 卡片样式 */
-        .card {
-            background: #fff;
-            border-radius: 8px;
             padding: 2rem;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-        }
-
-        .card-icon {
-            font-size: 2.5rem;
-            color: #3498db;
-            margin-bottom: 1.5rem;
-        }
-
-        .card h3 {
-            font-size: 1.5rem;
-            color: #2c3e50;
-            margin-bottom: 1rem;
-        }
-
-        .card p {
-            color: #555;
-            margin-bottom: 1.5rem;
-        }
-
-        /* 团队展示样式 */
-        .team-section {
-            margin-bottom: 4rem;
-        }
-
-        .section-title {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .section-title h2 {
-            font-size: 2rem;
-            color: #2c3e50;
-            margin-bottom: 1rem;
-        }
-
-        .section-title p {
-            color: #7f8c8d;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .team-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-        }
-
-        .team-member {
-            text-align: center;
-            background: #fff;
-            border-radius: 8px;
-            padding: 2rem;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s ease;
-        }
-
-        .team-member:hover {
-            transform: translateY(-5px);
-        }
-
-        .member-avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            background-color: #ecf0f1;
-            margin: 0 auto 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            color: #3498db;
-        }
-
-        .member-name {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #2c3e50;
-            margin-bottom: 0.5rem;
-        }
-
-        .member-role {
-            color: #3498db;
-            margin-bottom: 1rem;
-            font-weight: 500;
-        }
-
-        .member-desc {
-            color: #555;
-            font-size: 0.9rem;
-        }
-
-        /* 联系信息样式 */
-        .contact-info {
-            background: #fff;
-            border-radius: 8px;
-            padding: 2rem;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            text-align: center;
-            margin-top: 2rem;
         }
         
-        .contact-info h3 {
-            font-size: 1.5rem;
-            color: #2c3e50;
-            margin-bottom: 1.5rem;
-        }
-        
-        .contact-details {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
+        header {
+            text-align: center;
+            padding: 2rem 0;
+            border-bottom: 1px solid #ff6b00;
             margin-bottom: 2rem;
         }
         
-        .contact-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .contact-icon {
-            font-size: 2rem;
-            color: #3498db;
+        h1 {
+            font-size: 2.5rem;
+            color: #ff6b00;
             margin-bottom: 0.5rem;
         }
         
-        .contact-label {
-            font-weight: 600;
-            color: #2c3e50;
-            margin-bottom: 0.3rem;
+        .subtitle {
+            color: #ccc;
+            font-size: 1.2rem;
         }
         
-        .contact-value {
-            color: #555;
+        .content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-bottom: 2rem;
         }
         
-        /* QQ群按钮样式 */
-        .qq-group-section {
-            text-align: center;
-            margin-top: 3rem;
-            padding: 2rem;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        .about-text {
+            flex: 1;
+            min-width: 300px;
         }
         
-        .qq-group-section h3 {
-            font-size: 1.5rem;
-            color: #2c3e50;
+        .about-text h2 {
+            color: #ff6b00;
             margin-bottom: 1rem;
+            font-size: 1.8rem;
         }
         
-        .qq-group-section p {
-            color: #7f8c8d;
+        .about-text p {
+            line-height: 1.8;
+            margin-bottom: 1rem;
+            color: #e0e0e0;
+        }
+        
+        .features {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .features h2 {
+            color: #ff6b00;
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+        
+        .feature-list {
+            list-style-type: none;
+        }
+        
+        .feature-list li {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #333;
+            display: flex;
+            align-items: center;
+        }
+        
+        .feature-list li:before {
+            content: "✓";
+            color: #ff6b00;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .groups {
+            background: rgba(30, 30, 30, 0.8);
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 2rem;
+            border: 1px solid #ff6b00;
+        }
+        
+        .groups h2 {
+            color: #ff6b00;
             margin-bottom: 1.5rem;
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
         }
         
-        .qq-group-button {
-            display: inline-block;
-            background-color: #12b7f5; /* QQ蓝色 */
+        .group-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+        
+        .group-btn {
+            background: linear-gradient(to right, #ff6b00, #ff8c00);
             color: white;
-            padding: 0.8rem 2rem;
-            border-radius: 4px;
-            text-decoration: none;
-            font-weight: 600;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
             font-size: 1.1rem;
+            cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(18, 183, 245, 0.3);
+            box-shadow: 0 4px 15px rgba(255, 107, 0, 0.3);
+            display: flex;
+            align-items: center;
         }
         
-        .qq-group-button:hover {
-            background-color: #0ea0d8;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 8px rgba(18, 183, 245, 0.4);
+        .group-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 107, 0, 0.5);
         }
-
-        /* 响应式设计 */
+        
+        .group-btn i {
+            margin-right: 8px;
+            font-size: 1.2rem;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: #888;
+            border-top: 1px solid #333;
+            margin-top: 2rem;
+        }
+        
         @media (max-width: 768px) {
-            main {
-                padding: 2rem 1rem;
+            .content {
+                flex-direction: column;
             }
             
-            .page-title h1 {
-                font-size: 2rem;
+            .group-buttons {
+                flex-direction: column;
+                align-items: center;
             }
             
-            .page-title p {
-                font-size: 1rem;
+            .group-btn {
+                width: 80%;
             }
-            
-            .contact-details {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* 动画效果 */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .fade-in-up {
-            animation: fadeInUp 0.6s ease forwards;
         }
     </style>
 </head>
 <body>
-    <!-- 页面主内容区 -->
-    <main>
-        <!-- 页面标题区域 -->
-        <section class="page-title fade-in-up">
-            <h1>关于Mindows下载站</h1>
-            <p>我们致力于为用户提供高质量、安全可靠的Windows资源下载服务，通过严格的内容审核和优质的资源筛选，确保用户能够轻松找到所需内容。</p>
-        </section>
-
-        <!-- 核心价值卡片区域 -->
-        <section class="cards-container">
-            <!-- 使命卡片 -->
-            <div class="card fade-in-up">
-                <div class="card-icon">🎯</div>
-                <h3>我们的使命</h3>
-                <p>为用户提供高质量、安全可靠的资源下载服务。通过严格的内容审核和优质的资源筛选，确保用户能够轻松找到所需内容。</p>
-            </div>
-            
-            <!-- 愿景卡片 -->
-            <div class="card fade-in-up">
-                <div class="card-icon">🚀</div>
-                <h3>我们的愿景</h3>
-                <p>成为国内啥也不是的下载站。</p>
-            </div>
-            
-            <!-- 价值观卡片 -->
-            <div class="card fade-in-up">
-                <div class="card-icon">💎</div>
-                <h3>我们的价值观</h3>
-                <p>用户至上、内容为王、技术创新、开放共享。我们始终将用户体验放在首位，持续优化平台功能和服务。</p>
-            </div>
-        </section>
-
-        <!-- 团队介绍区域 -->
-        <section class="team-section">
-            <div class="section-title">
-                <h2>我们的团队</h2>
-                <p>一群热爱技术、专注于提供优质服务的专业人士</p>
-            </div>
-            
-            <div class="team-grid">
-                <!-- 团队成员1 -->
-                <div class="team-member fade-in-up">
-                    <div class="member-avatar">👨‍💼</div>
-                    <div class="member-name">xgp2012</div>
-                    <div class="member-role">创始人</div>
-                    <div class="member-desc">拥有3年互联网行业经验，致力于打造最优秀的资源分享平台。</div>
-                </div>
-                
-                <!-- 团队成员2 -->
-                <div class="team-member fade-in-up">
-                    <div class="member-avatar">👩‍💻</div>
-                    <div class="member-name">deepseek</div>
-                    <div class="member-role">技术总监</div>
-                    <div class="member-desc">大部分内容使用deepseek完成，感谢深度求索。</div>
-                </div>
-                
-                <!-- 团队成员3 -->
-                <div class="team-member fade-in-up">
-                    <div class="member-avatar">👨‍🎨</div>
-                    <div class="member-name">？？？</div>
-                    <div class="member-role">产品设计师</div>
-                    <div class="member-desc">专注于用户体验设计，打造直观易用的产品界面。</div>
-                </div>
-                
-                <!-- 团队成员4 -->
-                <div class="team-member fade-in-up">
-                    <div class="member-avatar">👩‍💼</div>
-                    <div class="member-name">GitHub</div>
-                    <div class="member-role">运营经理</div>
-                    <div class="member-desc">感谢GitHub提供的静态网站托管服务。</div>
-                </div>
-            </div>
-        </section>
+    <div class="container">
+        <header>
+            <h1>Mindows下载站</h1>
+            <p class="subtitle">专注系统资源分享的优质平台</p>
+        </header>
         
-        <!-- 联系信息区域 -->
-        <section class="contact-info fade-in-up">
-            <h3>联系我们</h3>
-            <div class="contact-details">
-                <div class="contact-item">
-                    <div class="contact-icon">📧</div>
-                    <div class="contact-label">邮箱</div>
-                    <div class="contact-value">2820567502@qq.com</div>
-                </div>
-                <div class="contact-item">
-                    <div class="contact-icon">💬</div>
-                    <div class="contact-label">QQ</div>
-                    <div class="contact-value">2820567502</div>
-                </div>
+        <div class="content">
+            <div class="about-text">
+                <h2>关于我们</h2>
+                <p>Mindows下载站是一个专注于系统资源分享的专业平台。我们致力于为用户提供最新、最全的系统镜像文件、优质程序和实用工具。</p>
+                <p>我们的网站由一名热爱技术、追求卓越的学牲组成，还有一群精神股东，因此我们不断优化服务，确保每一位用户都能获得最佳体验。</p>
+                <p>无论是Windows系统还是其他操作系统，我们都会尽可能及时更新最新的官方版本，让用户能够方便快捷地获取所需资源。</p>
             </div>
-        </section>
+            
+            <div class="features">
+                <h2>核心优势</h2>
+                <ul class="feature-list">
+                    <li>常见的系统ISO一键直链下载</li>
+                    <li>安全的直链下载渠道</li>
+                    <li>严格安全检测，保障文件安全</li>
+                    <li>专业的技术支持团队</li>
+                    <li>简洁易用的操作界面</li>
+                    <li>网站永久托管与GitHub</li>
+                </ul>
+            </div>
+        </div>
         
-        <!-- QQ群加入区域 -->
-        <section class="qq-group-section fade-in-up">
-            <h3>加入我们的QQ群（暂无）</h3>
-            <p>与更多用户交流，获取最新资源信息和下载技巧，参与社区讨论</p>
-            <a href="https://jq.qq.com/?_wv=1027&k=xxxxxxxx" target="_blank" class="qq-group-button">立即加入QQ群</a>
-        </section>
-    </main>
-
-    <script>
-        // 页面加载完成后执行
-        document.addEventListener('DOMContentLoaded', function() {
-            // 为所有卡片添加延迟动画效果
-            const cards = document.querySelectorAll('.fade-in-up');
-            cards.forEach((card, index) => {
-                // 设置不同的延迟时间，创造交错动画效果
-                card.style.animationDelay = `${index * 0.1}s`;
-            });
-        });
-    </script>
+        <div class="groups">
+            <h2>加入我们的交流群</h2>
+            <div class="group-buttons">
+                <button class="group-btn" onclick="alert('请扫描二维码添加QQ群')">
+                    <i>👥</i> QQ交流群1（还没有）
+                </button>
+                <button class="group-btn" onclick="alert('请扫描二维码添加QQ群')">
+                    <i>👥</i> 123
+                </button>
+                <button class="group-btn" onclick="alert('请扫描二维码添加QQ群')">
+                    <i>👥</i> 123
+                </button>
+            </div>
+        </div>
+        
+        <footer>
+            <p>&copy; 2025 Mindows下载站. All rights reserved.</p>
+            <p>网站地址：www.947563.xyz</p>
+        </footer>
+    </div>
 </body>
 </html>
